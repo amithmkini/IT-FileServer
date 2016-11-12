@@ -1,5 +1,6 @@
 package org.it206.server.test;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,15 +21,35 @@ public class WorkerRunnable implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		OutputStream output = null;
+		DataOutputStream out = null;
+		InputStream in = null;
+		DataInputStream inp = null;
 		try {
-			InputStream input = clientSocket.getInputStream();
-			OutputStream output = clientSocket.getOutputStream();
-			DataOutputStream out = new DataOutputStream(output);
-			out.writeUTF("Hello! Thanks for connecting to the Kini server!");
+			in = clientSocket.getInputStream();
+			inp = new DataInputStream(in);
+			output = clientSocket.getOutputStream();
+			out = new DataOutputStream(output);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		while (true) {
+			try {
+				if (in.available() != 0) {
+					System.out.println(inp.readUTF());
+					break;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		try {
+			out.writeUTF("Hello! Thanks for connecting to the server!");
 			out.flush();
-			output.close();
-			input.close();
 			System.out.println("Sent data successfully!");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
