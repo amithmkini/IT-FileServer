@@ -34,16 +34,16 @@ public class WorkerRunnable implements Runnable {
 			e.printStackTrace();
 		}
 		
-		while (true) {
+		while (true)
 			try {
-				if (in.available() != 0) {
-					System.out.println(inp.readUTF());
+				String message = inp.readUTF();
+				System.out.println(message);
+				if (message.equals("quit")) {
 					break;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
 		
 		try {
 			out.writeUTF("Hello! Thanks for connecting to the server!");

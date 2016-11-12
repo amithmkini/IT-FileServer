@@ -1,6 +1,6 @@
 package org.it206.client.test;
 
-import java.io.DataInputStream;
+//import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,37 +18,40 @@ public class Client {
 
     public static void main(String[] args) {
     	Socket s = null;
-    	DataInputStream inp = null;
+    	Scanner in = null;
+//    	DataInputStream inp = null;
     	OutputStream output = null;
     	DataOutputStream out = null;
-        Scanner portin = new Scanner(System.in);
-        Scanner addrin = new Scanner(System.in);
-        System.out.print("Enter port number: ");
-        int pt = portin.nextInt();
-        System.out.print("Enter server address: ");
-        String ad = addrin.next();
-        portin.close();
-        addrin.close();
-        Client me = new Client(pt, ad);
-        String msg = "This is a test message";
+        Client me = new Client(9999, "localhost");
         try {
             System.out.println("Trying to connect to " + me.serverAddr + " at port " + me.port);
             s = new Socket(me.serverAddr, me.port);
             System.out.println("Connected to " + s.getRemoteSocketAddress());
-            inp = new DataInputStream(s.getInputStream());
+//            inp = new DataInputStream(s.getInputStream());
             output = s.getOutputStream();
             out = new DataOutputStream(output);
-            out.writeUTF(msg);
         }
         catch (IOException e) {
+        	System.out.println("Cannot connect to the server!");
             e.printStackTrace();
+            System.exit(1);
         }
-    	try {
-    		System.out.println(inp.readUTF());
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
+        while (true) {
+	        try {
+		    	System.out.print("Enter a message: ");
+		    	in = new Scanner(System.in);
+		    	String message = in.next();
+				out.writeUTF(message);
+				if (message.equals("quit")) {
+					break;
+				}
+			} catch (IOException e) {
+				System.out.println("Error sending message!");
+				e.printStackTrace();
+			}
+        }
         try {
+        	in.close();
         	s.close();
         } catch (IOException e) {
         	e.printStackTrace();
