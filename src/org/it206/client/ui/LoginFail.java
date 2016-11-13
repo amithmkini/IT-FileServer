@@ -6,15 +6,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class LoginFail {
+public class LoginFail extends LoginPage{
 
-	private JFrame frame;
+	JFrame frame;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void newWindow() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -49,8 +51,13 @@ public class LoginFail {
 		frame.getContentPane().add(lblIncorrectYouDo);
 		
 		JButton btnOk = new JButton("Ok");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loginFlag = true;
+				frame.dispose();
+			}
+		});
 		btnOk.setBounds(70, 27, 89, 23);
 		frame.getContentPane().add(btnOk);
 	}
-
 }
