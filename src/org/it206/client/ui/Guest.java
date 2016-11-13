@@ -6,14 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTree;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Guest {
 
@@ -23,7 +20,7 @@ public class Guest {
 	JButton btnExit = null;
 	LoginPage login_window = null;
 	private JTable table;
-	private JScrollPane scrollPane;
+	Object fileToDownload;
 	
 	/**
 	 * Launch the application.
@@ -58,6 +55,11 @@ public class Guest {
 		frame.getContentPane().setLayout(null);
 		
 		btnDownload = new JButton("Download");
+		btnDownload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(fileToDownload);
+			}
+		});
 		btnDownload.setBounds(100, 527, 99, 23);
 		frame.getContentPane().add(btnDownload);
 		
@@ -75,20 +77,45 @@ public class Guest {
 		lblItwebserver.setBounds(100, 11, 584, 36);
 		frame.getContentPane().add(lblItwebserver);
 		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(100, 498, 584, -430);
-		frame.getContentPane().add(scrollPane);
-		
-		table = new JTable();
-		scrollPane.setViewportView(table);
 		
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				refresh the table list
+				developTable();
 			}
 		});
 		btnRefresh.setBounds(250, 527, 89, 23);
 		frame.getContentPane().add(btnRefresh);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(100, 58, 584, 458);
+		frame.getContentPane().add(scrollPane);
+		
+		table = new JTable();
+		table.setShowGrid(false);
+		table.setRowSelectionAllowed(false);
+		scrollPane.setViewportView(table);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		table.setDefaultEditor(Object.class, null);
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        int row = table.rowAtPoint(evt.getPoint());
+		        int col = table.columnAtPoint(evt.getPoint());
+		        fileToDownload = table.getModel().getValueAt(row, col);
+		    }
+		});
+		developTable();
+	}
+	
+	void developTable(){
+		String[] columnName = new String[1];
+		columnName[0] = "Files";
+		String[][] files = new String[50][1];
+		for (int i = 0; i < 50; i++) {
+			files[i][0] = Integer.toString(i+1);
+		}
+		DefaultTableModel tableModel = new DefaultTableModel(files, columnName);
+		table.setModel(tableModel);
 	}
 }
