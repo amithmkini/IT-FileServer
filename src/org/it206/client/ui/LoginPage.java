@@ -13,7 +13,6 @@ public class LoginPage extends Guest{
 
 	JFrame frame;
 	private JPasswordField passwordField;
-	boolean loginFlag = false;
 	private final String password = "password";
 	
 	/**
@@ -83,9 +82,6 @@ public class LoginPage extends Guest{
 			SuccessLogin success_pg = new SuccessLogin();
 			success_pg.frame.setVisible(true);
 			super.access = true;
-//			if (loginFlag == true){
-//				frame.dispose();
-//			}
 		}
 		else{
 			LoginFail fail_pg = new LoginFail();

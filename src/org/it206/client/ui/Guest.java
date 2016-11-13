@@ -7,14 +7,24 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTree;
-import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class Guest {
 
 	private JFrame frame;
 	boolean access = false;
-
+	JButton btnDownload = null;
+	JButton btnExit = null;
+	LoginPage login_window = null;
+	private JTable table;
+	private JScrollPane scrollPane;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -47,39 +57,38 @@ public class Guest {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnDownload = new JButton("Download");
-		btnDownload.setBounds(68, 527, 99, 23);
+		btnDownload = new JButton("Download");
+		btnDownload.setBounds(100, 527, 99, 23);
 		frame.getContentPane().add(btnDownload);
 		
-		JButton btnUpload = new JButton("Upload");
-		btnUpload.setBounds(237, 527, 99, 23);
-		frame.getContentPane().add(btnUpload);
-		btnUpload.setEnabled(false);
-		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setBounds(346, 527, 99, 23);
-		frame.getContentPane().add(btnDelete);
-		btnDelete.setEnabled(false);
-		
-		JButton btnLogin = new JButton("Login");
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				LoginPage login_window = new LoginPage();
-				login_window.openLoginPage();
-				btnUpload.setEnabled(false);
-				btnDelete.setEnabled(false);
-			}
-		});
-		btnLogin.setBounds(529, 527, 99, 23);
-		frame.getContentPane().add(btnLogin);
-		
-		JButton btnExit = new JButton("Exit");
+		btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.dispose();
 			}
 		});
-		btnExit.setBounds(685, 527, 89, 23);
+		btnExit.setBounds(595, 527, 89, 23);
 		frame.getContentPane().add(btnExit);
+		
+		JLabel lblItwebserver = new JLabel("                                            IT-WEBSERVER");
+		lblItwebserver.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 17));
+		lblItwebserver.setBounds(100, 11, 584, 36);
+		frame.getContentPane().add(lblItwebserver);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(100, 498, 584, -430);
+		frame.getContentPane().add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				refresh the table list
+			}
+		});
+		btnRefresh.setBounds(250, 527, 89, 23);
+		frame.getContentPane().add(btnRefresh);
 	}
 }
