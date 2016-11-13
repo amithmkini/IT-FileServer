@@ -21,11 +21,14 @@ public class Guest {
 	LoginPage login_window = null;
 	private JTable table;
 	Object fileToDownload;
+	private String ipAddress, port;
 	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void newWindow(String x, String y) {
+		this.ipAddress = x;
+		this.port = y;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -111,10 +114,12 @@ public class Guest {
 	void developTable(){
 		String[] columnName = new String[1];
 		columnName[0] = "Files";
+		
 		String[][] files = new String[50][1];
 		for (int i = 0; i < 50; i++) {
 			files[i][0] = Integer.toString(i+1);
 		}
+		
 		DefaultTableModel tableModel = new DefaultTableModel(files, columnName);
 		table.setModel(tableModel);
 	}
