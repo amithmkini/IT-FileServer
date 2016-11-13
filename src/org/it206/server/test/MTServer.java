@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class MTServer implements Runnable{
+public class MTServer implements Runnable {
 	
 	protected int serverPort = 9999;
 	protected ServerSocket serverSocket = null;
@@ -22,11 +22,14 @@ public class MTServer implements Runnable{
 		synchronized (this) {
 			this.runningThread = Thread.currentThread();
 		}
+		System.out.println("Starting the server");
 		openServerSocket();
+		System.out.println("The server is started!");
 		while (!isStopped()){
 			Socket clientSocket = null;
 			try {
 				clientSocket = this.serverSocket.accept();
+				System.out.println("Client connected!");
 			} catch (IOException e){
 				e.printStackTrace();
 				if (isStopped()) {
@@ -37,7 +40,6 @@ public class MTServer implements Runnable{
 			}
 			new Thread(new WorkerRunnable(clientSocket,"Multithreaded server")).start(); 			
 		}
-		System.out.println("The server has stopped!");
 	}
 
 	private synchronized boolean isStopped() {

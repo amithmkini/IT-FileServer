@@ -37,6 +37,7 @@ public class WorkerRunnable implements Runnable {
 		while (true)
 			try {
 				String message = inp.readUTF();
+				out.writeUTF("Got the message!");
 				System.out.println(message);
 				if (message.equals("quit")) {
 					break;
@@ -46,7 +47,7 @@ public class WorkerRunnable implements Runnable {
 			}
 		
 		try {
-			out.writeUTF("Hello! Thanks for connecting to the server!");
+			out.writeUTF("Thanks for connecting to the server!");
 			out.flush();
 			System.out.println("Sent data successfully!");
 			

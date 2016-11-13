@@ -1,5 +1,6 @@
 package org.it206.client.test;
 
+import java.io.DataInputStream;
 //import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class Client {
     public static void main(String[] args) {
     	Socket s = null;
     	Scanner in = null;
-//    	DataInputStream inp = null;
+    	DataInputStream inp = null;
     	OutputStream output = null;
     	DataOutputStream out = null;
         Client me = new Client(9999, "localhost");
@@ -30,6 +31,7 @@ public class Client {
 //            inp = new DataInputStream(s.getInputStream());
             output = s.getOutputStream();
             out = new DataOutputStream(output);
+            inp = new DataInputStream(s.getInputStream());
         }
         catch (IOException e) {
         	System.out.println("Cannot connect to the server!");
@@ -42,7 +44,10 @@ public class Client {
 		    	in = new Scanner(System.in);
 		    	String message = in.next();
 				out.writeUTF(message);
+				String inbox = inp.readUTF();
+				System.out.println(inbox);
 				if (message.equals("quit")) {
+					System.out.println(inp.readUTF());
 					break;
 				}
 			} catch (IOException e) {
