@@ -2,6 +2,9 @@ package org.it206.server.test;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,44 +16,68 @@ public class WorkerRunnable implements Runnable {
 	protected String serverText = null;
 	
 	public WorkerRunnable(Socket cS, String sT) {
-		// TODO Auto-generated constructor stub
 		this.clientSocket = cS;
 		this.serverText = sT;
 	}
 	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		// Add object declaration here
 		OutputStream output = null;
-		DataOutputStream out = null;
-		InputStream in = null;
-		DataInputStream inp = null;
+		DataOutputStream sout = null;
+		InputStream input = null;
+		DataInputStream sin = null;
+		// Initialize objects here
+		
 		try {
-			in = clientSocket.getInputStream();
-			inp = new DataInputStream(in);
+			input = clientSocket.getInputStream();
+			sin = new DataInputStream(input);
 			output = clientSocket.getOutputStream();
-			out = new DataOutputStream(output);
+			sout = new DataOutputStream(output);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		while (true){
-			try {
-				String message = inp.readUTF();
-				out.writeUTF("Got the message!");
-				System.out.println(message);
-				if (message.equals("quit")) {
-					break;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		FileTransfer("D:\\test.txt",input,output);
+		
 		try {
-			out.writeUTF("Thanks for connecting to the server!");
-			out.flush();
-			System.out.println("Sent data successfully!");
-			
+			input.close();
+			sin.close();
+			sout.close();
+			output.close();
+		} catch (IOException e) {
+			System.out.println("Error closing sockets!");
+		}
+	}
+	
+	private synchronized void FileTransfer(String path, InputStream input, OutputStream output) {
+		FileInputStream fin = null;
+		byte[] buffer = new byte[8*1024];
+		File file = new File(path);
+		
+		try {
+			fin = new FileInputStream(file);
+		} catch (FileNotFoundException ex) {
+			System.out.println("File not found!");
+			ex.printStackTrace();
+		}
+		
+		int count;
+		try {
+			while ((count = fin.read(buffer)) > 0) {
+				output.write(buffer, 0, count);
+			}
+		} catch (IOException e) {
+			System.out.println("Error sending file");
+			e.printStackTrace();
+		}
+		
+		System.out.println("File sent successfully!");
+		
+		try {
+			input.close();
+			output.close();
+			if (fin != null ) fin.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
