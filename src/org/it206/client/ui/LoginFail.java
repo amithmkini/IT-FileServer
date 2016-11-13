@@ -53,7 +53,6 @@ public class LoginFail extends LoginPage{
 		JButton btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				loginFlag = true;
 				frame.dispose();
 			}
 		});
