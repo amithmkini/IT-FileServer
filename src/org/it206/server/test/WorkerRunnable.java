@@ -34,7 +34,7 @@ public class WorkerRunnable implements Runnable {
 			e.printStackTrace();
 		}
 		
-		while (true)
+		while (true){
 			try {
 				String message = inp.readUTF();
 				out.writeUTF("Got the message!");
@@ -45,7 +45,7 @@ public class WorkerRunnable implements Runnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		
+		}
 		try {
 			out.writeUTF("Thanks for connecting to the server!");
 			out.flush();

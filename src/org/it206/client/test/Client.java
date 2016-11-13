@@ -28,7 +28,6 @@ public class Client {
             System.out.println("Trying to connect to " + me.serverAddr + " at port " + me.port);
             s = new Socket(me.serverAddr, me.port);
             System.out.println("Connected to " + s.getRemoteSocketAddress());
-//            inp = new DataInputStream(s.getInputStream());
             output = s.getOutputStream();
             out = new DataOutputStream(output);
             inp = new DataInputStream(s.getInputStream());
@@ -42,7 +41,7 @@ public class Client {
 	        try {
 		    	System.out.print("Enter a message: ");
 		    	in = new Scanner(System.in);
-		    	String message = in.next();
+		    	String message = in.nextLine();
 				out.writeUTF(message);
 				String inbox = inp.readUTF();
 				System.out.println(inbox);
