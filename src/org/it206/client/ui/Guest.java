@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 public class Guest {
 
 	private JFrame frame;
+	boolean access = false;
 
 	/**
 	 * Launch the application.
@@ -56,12 +57,30 @@ public class Guest {
 		JButton btnUpload = new JButton("Upload");
 		btnUpload.setBounds(237, 527, 99, 23);
 		frame.getContentPane().add(btnUpload);
+		btnUpload.setEnabled(false);
 		
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setBounds(346, 527, 99, 23);
 		frame.getContentPane().add(btnDelete);
+		btnDelete.setEnabled(false);
 		
 		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LoginPage login_window = new LoginPage();
+				login_window.openLoginPage();
+				if (access == true){
+					btnUpload.setEnabled(true);
+					btnDelete.setEnabled(true);
+					btnLogin.setEnabled(false);
+				}
+				else{
+					btnUpload.setEnabled(false);
+					btnDelete.setEnabled(false);
+					btnLogin.setEnabled(true);
+				}
+			}
+		});
 		btnLogin.setBounds(529, 527, 99, 23);
 		frame.getContentPane().add(btnLogin);
 		

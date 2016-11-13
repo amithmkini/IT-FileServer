@@ -7,16 +7,17 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class SuccessLogin {
+public class SuccessLogin extends LoginPage{
 
-	private JFrame frame;
-	private final String password = "password";
+	JFrame frame;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void newWindow() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -29,16 +30,7 @@ public class SuccessLogin {
 		});
 	}
 	
-	public void password_check(char[] x){
-		String pw = new String(x);
-		if (pw.equals(password)){
-			
-		}
-		else{
-			
-		}
-	}
-
+	
 	/**
 	 * Create the application.
 	 */
@@ -62,8 +54,13 @@ public class SuccessLogin {
 		frame.getContentPane().add(lblSuccessful);
 		
 		JButton btnOk = new JButton("Ok");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loginFlag = true;
+				frame.dispose();
+			}
+		});
 		btnOk.setBounds(62, 27, 89, 23);
 		frame.getContentPane().add(btnOk);
 	}
-
 }
