@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTree;
 import javax.swing.JFileChooser;
+import javax.swing.JTable;
 
 public class Guest {
 
@@ -47,12 +48,8 @@ public class Guest {
 		frame.getContentPane().setLayout(null);
 		
 		JButton btnDownload = new JButton("Download");
-		btnDownload.setBounds(128, 527, 99, 23);
+		btnDownload.setBounds(68, 527, 99, 23);
 		frame.getContentPane().add(btnDownload);
-		
-		JButton btnSelectAll = new JButton("Select all");
-		btnSelectAll.setBounds(10, 527, 99, 23);
-		frame.getContentPane().add(btnSelectAll);
 		
 		JButton btnUpload = new JButton("Upload");
 		btnUpload.setBounds(237, 527, 99, 23);
@@ -69,31 +66,20 @@ public class Guest {
 			public void actionPerformed(ActionEvent e) {
 				LoginPage login_window = new LoginPage();
 				login_window.openLoginPage();
-				if (access == true){
-					btnUpload.setEnabled(true);
-					btnDelete.setEnabled(true);
-					btnLogin.setEnabled(false);
-				}
-				else{
-					btnUpload.setEnabled(false);
-					btnDelete.setEnabled(false);
-					btnLogin.setEnabled(true);
-				}
+				btnUpload.setEnabled(false);
+				btnDelete.setEnabled(false);
 			}
 		});
 		btnLogin.setBounds(529, 527, 99, 23);
 		frame.getContentPane().add(btnLogin);
 		
-		JTree tree = new JTree();
-		tree.setBounds(10, 11, 764, 494);
-		frame.getContentPane().add(tree);
-		
 		JButton btnExit = new JButton("Exit");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+			}
+		});
 		btnExit.setBounds(685, 527, 89, 23);
 		frame.getContentPane().add(btnExit);
-		
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setBounds(25, 37, 582, 397);
-		frame.getContentPane().add(fileChooser);
 	}
 }
