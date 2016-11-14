@@ -29,18 +29,21 @@ public class Guest {
 	LoginPage login_window = null;
 	private JTable table;
 	Object fileToDownload;
-	
+	private String ipAddress, port;
+
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void newWindow(String x, String y) {
+		this.ipAddress = x;
+		this.port = y;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Guest window = new Guest();
 					window.frame.setVisible(true);
-			        
-					
+
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -54,12 +57,10 @@ public class Guest {
     	OutputStream output = null;
     	DataOutputStream out = null;
     	DataInputStream inp = null;
-    	String serverAddr = "localhost";
-    	int port = 9999;
-        
+
         try {
-            System.out.println("Trying to connect to " + serverAddr + " at port " + port);
-            s = new Socket(serverAddr, port);
+            System.out.println("Trying to connect to " + ipAddress + " at port " + port);
+            s = new Socket(ipAddress, port);
             System.out.println("Connected to " + s.getRemoteSocketAddress());
             in = s.getInputStream();
             output = s.getOutputStream();
@@ -71,12 +72,12 @@ public class Guest {
             e.printStackTrace();
             System.exit(1);
         }
-        
+
         String choice = "list";
         String[] list = {"1","2","3"};
         try {
         	out.writeUTF(choice);
-        	
+
         	int filesCount = inp.readInt();
         	list = new String[filesCount];
 
@@ -85,7 +86,7 @@ public class Guest {
         	    String fileName = inp.readUTF();
         	    list[i] = fileName;
         	}
-        	
+
         	out.close();
         	output.close();
         	in.close();
@@ -94,9 +95,9 @@ public class Guest {
         	e.printStackTrace();
         }
 		return list;
-		
+
 	}
-	
+
 	private synchronized static void FileTransfer(String path) {
 		Socket s = null;
     	InputStream in = null;
@@ -104,10 +105,10 @@ public class Guest {
     	DataOutputStream out = null;
     	String serverAddr = "localhost";
     	int port = 9999;
-        
+
         try {
-            System.out.println("Trying to connect to " + serverAddr + " at port " + port);
-            s = new Socket(serverAddr, port);
+            System.out.println("Trying to connect to " + ipAddress + " at port " + port);
+            s = new Socket(ipAddress, port);
             System.out.println("Connected to " + s.getRemoteSocketAddress());
             in = s.getInputStream();
             output = s.getOutputStream();
@@ -118,26 +119,26 @@ public class Guest {
             e.printStackTrace();
             System.exit(1);
         }
-        
+
         try {
         	out.writeUTF("dload");
         	out.writeUTF(path);
         } catch (IOException e) {
         	e.printStackTrace();
         }
-        
+
         String saveTo = "D:\\Downloads\\"+path;
-        
+
 		FileOutputStream fout = null;
 		byte[] buffer = new byte[8*1024];
-		
+
 		try {
 			fout = new FileOutputStream(saveTo);
 		} catch (FileNotFoundException ex) {
 			System.out.println("File not found!");
 			ex.printStackTrace();
 		}
-		
+
 		int count;
 		try {
 			while ((count = in.read(buffer)) > 0) {
@@ -147,9 +148,9 @@ public class Guest {
 			System.out.println("Error sending file");
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("File received successfully!");
-		
+
 		try {
 			out.close();
         	output.close();
@@ -160,7 +161,7 @@ public class Guest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Create the application.
 	 */
@@ -176,7 +177,7 @@ public class Guest {
 		frame.setBounds(50, 50, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		btnDownload = new JButton("Download");
 		btnDownload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -186,7 +187,7 @@ public class Guest {
 		});
 		btnDownload.setBounds(100, 527, 99, 23);
 		frame.getContentPane().add(btnDownload);
-		
+
 		btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -195,13 +196,13 @@ public class Guest {
 		});
 		btnExit.setBounds(595, 527, 89, 23);
 		frame.getContentPane().add(btnExit);
-		
+
 		JLabel lblItwebserver = new JLabel("                                            IT-WEBSERVER");
 		lblItwebserver.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 17));
 		lblItwebserver.setBounds(100, 11, 584, 36);
 		frame.getContentPane().add(lblItwebserver);
-		
-		
+
+
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -210,11 +211,11 @@ public class Guest {
 		});
 		btnRefresh.setBounds(250, 527, 89, 23);
 		frame.getContentPane().add(btnRefresh);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(100, 58, 584, 458);
 		frame.getContentPane().add(scrollPane);
-		
+
 		table = new JTable();
 		table.setShowGrid(false);
 		table.setRowSelectionAllowed(false);
@@ -231,16 +232,17 @@ public class Guest {
 		});
 		developTable();
 	}
-	
+
 	void developTable(){
 		String[] columnName = new String[1];
 		columnName[0] = "Files";
+
 		String[] list = listFiles();
-		
+
 		String[][] files = new String[list.length][1];
 		for (int i = 0; i < list.length; i++) {
 			files[i][0] = list[i];
-		}
+
 		DefaultTableModel tableModel = new DefaultTableModel(files, columnName);
 		table.setModel(tableModel);
 	}
