@@ -75,8 +75,6 @@ public class Client {
 		System.out.println("File received successfully!");
 		
 		try {
-			input.close();
-			output.close();
 			if (fout != null ) fout.close();
 		} catch (IOException e) {
 			e.printStackTrace();

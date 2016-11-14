@@ -1,5 +1,6 @@
 package org.it206.server.test;
 
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -27,6 +28,9 @@ public class WorkerRunnable implements Runnable {
 		DataOutputStream sout = null;
 		InputStream input = null;
 		DataInputStream sin = null;
+		String choice = null;
+		String fileName = null;
+		String folder = "D:\\";
 		// Initialize objects here
 		
 		try {
@@ -37,8 +41,24 @@ public class WorkerRunnable implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		FileTransfer("D:\\test.txt",input,output);
+		try {
+			while (true) {
+				choice = sin.readUTF();
+				if (choice.equals("exit")){
+					break;
+				}
+				else if (choice.equals("dload")){
+					fileName = sin.readUTF();
+					String path = folder + fileName;
+					FileTransfer(path, input, output);
+				}
+				else if (choice.equals("list")) {
+					listFiles(folder, input, output);
+				}
+			} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		try {
 			input.close();
@@ -50,7 +70,7 @@ public class WorkerRunnable implements Runnable {
 		}
 	}
 	
-	private synchronized void FileTransfer(String path, InputStream input, OutputStream output) {
+	private static void FileTransfer(String path, InputStream input, OutputStream output) {
 		FileInputStream fin = null;
 		byte[] buffer = new byte[8*1024];
 		File file = new File(path);
@@ -75,11 +95,31 @@ public class WorkerRunnable implements Runnable {
 		System.out.println("File sent successfully!");
 		
 		try {
-			input.close();
-			output.close();
 			if (fin != null ) fin.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private synchronized void listFiles (String path, InputStream input, OutputStream output) {
+		BufferedOutputStream bos = new BufferedOutputStream(output);
+		DataOutputStream dos = new DataOutputStream(bos);
+		File[] files = new File(path).listFiles();
+		
+		try {
+			dos.writeInt(files.length);
+			
+			for (File file : files) {
+				String name = file.getName();
+				dos.writeUTF(name);
+			}
+			
+			bos.close();
+			dos.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

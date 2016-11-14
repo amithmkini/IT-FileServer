@@ -5,6 +5,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -31,6 +39,8 @@ public class Guest {
 				try {
 					Guest window = new Guest();
 					window.frame.setVisible(true);
+			        
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -38,6 +48,119 @@ public class Guest {
 		});
 	}
 
+	private synchronized String[] listFiles() {
+		Socket s = null;
+    	InputStream in = null;
+    	OutputStream output = null;
+    	DataOutputStream out = null;
+    	DataInputStream inp = null;
+    	String serverAddr = "localhost";
+    	int port = 9999;
+        
+        try {
+            System.out.println("Trying to connect to " + serverAddr + " at port " + port);
+            s = new Socket(serverAddr, port);
+            System.out.println("Connected to " + s.getRemoteSocketAddress());
+            in = s.getInputStream();
+            output = s.getOutputStream();
+            inp = new DataInputStream(in);
+            out = new DataOutputStream(output);
+        }
+        catch (IOException e) {
+        	System.out.println("Cannot connect to the server!");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        
+        String choice = "list";
+        String[] list = {"1","2","3"};
+        try {
+        	out.writeUTF(choice);
+        	
+        	int filesCount = inp.readInt();
+        	list = new String[filesCount];
+
+        	for(int i = 0; i < filesCount; i++)
+        	{
+        	    String fileName = inp.readUTF();
+        	    list[i] = fileName;
+        	}
+        	
+        	out.close();
+        	output.close();
+        	in.close();
+        	s.close();
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
+		return list;
+		
+	}
+	
+	private synchronized static void FileTransfer(String path) {
+		Socket s = null;
+    	InputStream in = null;
+    	OutputStream output = null;
+    	DataOutputStream out = null;
+    	String serverAddr = "localhost";
+    	int port = 9999;
+        
+        try {
+            System.out.println("Trying to connect to " + serverAddr + " at port " + port);
+            s = new Socket(serverAddr, port);
+            System.out.println("Connected to " + s.getRemoteSocketAddress());
+            in = s.getInputStream();
+            output = s.getOutputStream();
+            out = new DataOutputStream(output);
+        }
+        catch (IOException e) {
+        	System.out.println("Cannot connect to the server!");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        
+        try {
+        	out.writeUTF("dload");
+        	out.writeUTF(path);
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
+        
+        String saveTo = "D:\\Downloads\\"+path;
+        
+		FileOutputStream fout = null;
+		byte[] buffer = new byte[8*1024];
+		
+		try {
+			fout = new FileOutputStream(saveTo);
+		} catch (FileNotFoundException ex) {
+			System.out.println("File not found!");
+			ex.printStackTrace();
+		}
+		
+		int count;
+		try {
+			while ((count = in.read(buffer)) > 0) {
+				fout.write(buffer, 0, count);
+			}
+		} catch (IOException e) {
+			System.out.println("Error sending file");
+			e.printStackTrace();
+		}
+		
+		System.out.println("File received successfully!");
+		
+		try {
+			out.close();
+        	output.close();
+        	in.close();
+        	s.close();
+			if (fout != null ) fout.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Create the application.
 	 */
@@ -57,7 +180,8 @@ public class Guest {
 		btnDownload = new JButton("Download");
 		btnDownload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(fileToDownload);
+//				System.out.println(fileToDownload);
+				FileTransfer((String)fileToDownload);
 			}
 		});
 		btnDownload.setBounds(100, 527, 99, 23);
@@ -111,9 +235,11 @@ public class Guest {
 	void developTable(){
 		String[] columnName = new String[1];
 		columnName[0] = "Files";
-		String[][] files = new String[50][1];
-		for (int i = 0; i < 50; i++) {
-			files[i][0] = Integer.toString(i+1);
+		String[] list = listFiles();
+		
+		String[][] files = new String[list.length][1];
+		for (int i = 0; i < list.length; i++) {
+			files[i][0] = list[i];
 		}
 		DefaultTableModel tableModel = new DefaultTableModel(files, columnName);
 		table.setModel(tableModel);
