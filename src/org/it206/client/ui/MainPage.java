@@ -16,7 +16,8 @@ public class MainPage {
 	private JTextField ipaddr;
 	private JTextField portNo;
 
-	private String ipaddress, port;
+	String ipaddress;
+	String port;
 	
 	/**
 	 * Launch the application.
@@ -80,7 +81,7 @@ public class MainPage {
 		JButton btnConnect = new JButton("Connect");
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Guest open = new Guest();
+				Guest open = new Guest(ipaddr.getText(), portNo.getText());
 				open.newWindow(ipaddr.getText(), portNo.getText());
 				mainpage.dispose();
 			}
