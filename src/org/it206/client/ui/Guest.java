@@ -145,9 +145,11 @@ public class Guest {
 
 		int count;
 		try {
-			while ((count = in.read(buffer)) > 0) {
+			do {
+				count = in.read(buffer);
 				fout.write(buffer, 0, count);
-			}
+				System.out.println(count);
+			} while (count > 0);
 		} catch (IOException e) {
 			System.out.println("Error sending file");
 			e.printStackTrace();

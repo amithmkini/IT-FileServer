@@ -4,7 +4,7 @@ public class Server {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		MTServer server = new MTServer(9999);
+		MTServer server = new MTServer(8080);
 		new Thread(server).start();
 
 		try {
