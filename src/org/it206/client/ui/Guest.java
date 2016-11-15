@@ -26,10 +26,9 @@ public class Guest {
 	boolean access = false;
 	JButton btnDownload = null;
 	JButton btnExit = null;
-	LoginPage login_window = null;
 	private JTable table;
 	Object fileToDownload;
-	private String ipAddress, port;
+	String ipAddress, port;
 
 	/**
 	 * Launch the application.
@@ -37,12 +36,15 @@ public class Guest {
 	public void newWindow(String x, String y) {
 		this.ipAddress = x;
 		this.port = y;
+		System.out.println(x+" "+y);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Guest window = new Guest();
+					ipAddress = x;
+					port = y;
+					Guest window = new Guest(x,y);
 					window.frame.setVisible(true);
-
+					
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,10 +59,12 @@ public class Guest {
     	OutputStream output = null;
     	DataOutputStream out = null;
     	DataInputStream inp = null;
+    	String ipAddress = this.ipAddress;
+    	String port = this.port;
 
         try {
             System.out.println("Trying to connect to " + ipAddress + " at port " + port);
-            s = new Socket(ipAddress, port);
+            s = new Socket(ipAddress, Integer.parseInt(port));
             System.out.println("Connected to " + s.getRemoteSocketAddress());
             in = s.getInputStream();
             output = s.getOutputStream();
@@ -98,17 +102,17 @@ public class Guest {
 
 	}
 
-	private synchronized static void FileTransfer(String path) {
+	private synchronized void FileTransfer(String path) {
 		Socket s = null;
     	InputStream in = null;
     	OutputStream output = null;
     	DataOutputStream out = null;
-    	String serverAddr = "localhost";
-    	int port = 9999;
+    	String ipAddress = this.ipAddress;
+    	String port = this.port;
 
         try {
             System.out.println("Trying to connect to " + ipAddress + " at port " + port);
-            s = new Socket(ipAddress, port);
+            s = new Socket(ipAddress, Integer.parseInt(port));
             System.out.println("Connected to " + s.getRemoteSocketAddress());
             in = s.getInputStream();
             output = s.getOutputStream();
@@ -141,9 +145,11 @@ public class Guest {
 
 		int count;
 		try {
-			while ((count = in.read(buffer)) > 0) {
+			do {
+				count = in.read(buffer);
 				fout.write(buffer, 0, count);
-			}
+				System.out.println(count);
+			} while (count > 0);
 		} catch (IOException e) {
 			System.out.println("Error sending file");
 			e.printStackTrace();
@@ -164,8 +170,12 @@ public class Guest {
 
 	/**
 	 * Create the application.
+	 * @param y 
+	 * @param x 
 	 */
-	public Guest() {
+	public Guest(String x, String y) {
+		this.ipAddress = x;
+		this.port = y;
 		initialize();
 	}
 
@@ -242,7 +252,7 @@ public class Guest {
 		String[][] files = new String[list.length][1];
 		for (int i = 0; i < list.length; i++) {
 			files[i][0] = list[i];
-
+		}
 		DefaultTableModel tableModel = new DefaultTableModel(files, columnName);
 		table.setModel(tableModel);
 	}

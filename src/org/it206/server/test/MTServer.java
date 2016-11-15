@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class MTServer implements Runnable {
 	
-	protected int serverPort = 9999;
+	protected int serverPort = 8080;
 	protected ServerSocket serverSocket = null;
 	protected Thread runningThread = null;
 	protected boolean isStopped = false;

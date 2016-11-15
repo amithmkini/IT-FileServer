@@ -96,7 +96,9 @@ public class WorkerRunnable implements Runnable {
 		
 		try {
 			if (fin != null ) fin.close();
-		} catch (IOException e) {
+			Thread.sleep(10000);
+			output.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
