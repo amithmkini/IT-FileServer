@@ -131,7 +131,14 @@ public class Guest {
         	e.printStackTrace();
         }
 
-        String saveTo = "D:\\Downloads\\"+path;
+        String saveTo = null;
+        if (System.getProperty("os.name").contains("Windows")){
+			saveTo = "D:\\Downloads\\"+path;
+		}
+		else{
+			String home = System.getProperty("user.home");
+			saveTo = home+"/Downloads/";
+		}
 
 		FileOutputStream fout = null;
 		byte[] buffer = new byte[8*1024];

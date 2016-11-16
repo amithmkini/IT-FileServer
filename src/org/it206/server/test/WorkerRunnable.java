@@ -30,7 +30,14 @@ public class WorkerRunnable implements Runnable {
 		DataInputStream sin = null;
 		String choice = null;
 		String fileName = null;
-		String folder = "D:\\IT206\\";
+		String folder = null;
+		if (System.getProperty("os.name").contains("Windows")){
+			folder = "D:\\IT206\\";
+		}
+		else{
+			String home = System.getProperty("user.home");
+			folder = home;
+		}
 		// Initialize objects here
 		
 		try {
