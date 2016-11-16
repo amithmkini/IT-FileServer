@@ -50,9 +50,10 @@ public class DialogBox {
 		lblServerHasBeen.setBounds(32, 11, 174, 35);
 		frame.getContentPane().add(lblServerHasBeen);
 		
-		JButton btnOk = new JButton("OK");
+		JButton btnOk = new JButton("Exit");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
 				frame.dispose();
 			}
 		});
