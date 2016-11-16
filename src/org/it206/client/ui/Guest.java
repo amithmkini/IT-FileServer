@@ -132,11 +132,11 @@ public class Guest {
         }
 
         String saveTo = null;
+        String home = System.getProperty("user.home");
         if (System.getProperty("os.name").contains("Windows")){
-			saveTo = "D:\\Downloads\\"+path;
+			saveTo = home+"\\Downloads\\"+path;
 		}
 		else{
-			String home = System.getProperty("user.home");
 			saveTo = home+"/Downloads/"+path;
 		}
 
@@ -198,7 +198,6 @@ public class Guest {
 		btnDownload = new JButton("Download");
 		btnDownload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				System.out.println(fileToDownload);
 				FileTransfer((String)fileToDownload);
 			}
 		});
