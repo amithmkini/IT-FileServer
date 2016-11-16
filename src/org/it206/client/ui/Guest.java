@@ -158,11 +158,11 @@ public class Guest {
 		System.out.println("File received successfully!");
 
 		try {
+			fout.close();
+			in.close();
 			out.close();
         	output.close();
-        	in.close();
         	s.close();
-			if (fout != null ) fout.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
