@@ -25,6 +25,8 @@ public class MTServer implements Runnable {
 		System.out.println("Starting the server");
 		openServerSocket();
 		System.out.println("The server is started!");
+		DialogBox box = new DialogBox();
+		box.newWindow();
 		while (!isStopped()){
 			Socket clientSocket = null;
 			try {
