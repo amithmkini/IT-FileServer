@@ -198,7 +198,6 @@ public class Guest {
 		btnDownload = new JButton("Download");
 		btnDownload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				System.out.println(fileToDownload);
 				FileTransfer((String)fileToDownload);
 			}
 		});
