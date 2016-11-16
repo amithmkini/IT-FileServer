@@ -132,11 +132,11 @@ public class Guest {
         }
 
         String saveTo = null;
+        String home = System.getProperty("user.home");
         if (System.getProperty("os.name").contains("Windows")){
-			saveTo = "D:\\Downloads\\"+path;
+			saveTo = home+"\\Downloads\\"+path;
 		}
 		else{
-			String home = System.getProperty("user.home");
 			saveTo = home+"/Downloads/"+path;
 		}
 
