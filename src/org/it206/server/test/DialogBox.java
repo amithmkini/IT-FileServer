@@ -48,6 +48,7 @@ public class DialogBox {
 		JLabel lblServerHasBeen = new JLabel("Server has been started!");
 		lblServerHasBeen.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblServerHasBeen.setBounds(32, 11, 174, 35);
+		lblServerHasBeen.setPreferredSize(lblServerHasBeen.getPreferredSize());
 		frame.getContentPane().add(lblServerHasBeen);
 		
 		JButton btnOk = new JButton("Exit");
