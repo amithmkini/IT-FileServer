@@ -36,7 +36,7 @@ public class WorkerRunnable implements Runnable {
 		}
 		else{
 			String home = System.getProperty("user.home");
-			folder = home;
+			folder = home+'/';
 		}
 		// Initialize objects here
 		

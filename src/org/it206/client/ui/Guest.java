@@ -137,7 +137,7 @@ public class Guest {
 		}
 		else{
 			String home = System.getProperty("user.home");
-			saveTo = home+"/Downloads/";
+			saveTo = home+"/Downloads/"+path;
 		}
 
 		FileOutputStream fout = null;
