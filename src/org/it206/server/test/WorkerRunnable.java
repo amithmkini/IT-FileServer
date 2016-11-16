@@ -30,7 +30,7 @@ public class WorkerRunnable implements Runnable {
 		DataInputStream sin = null;
 		String choice = null;
 		String fileName = null;
-		String folder = "D:\\";
+		String folder = "D:\\IT206\\";
 		// Initialize objects here
 		
 		try {
@@ -96,8 +96,9 @@ public class WorkerRunnable implements Runnable {
 		
 		try {
 			if (fin != null ) fin.close();
-			Thread.sleep(10000);
+			Thread.sleep(5000);
 			output.close();
+			input.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
